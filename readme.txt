@@ -23,7 +23,7 @@ HTML5, CSS3, Vanilla JavaScript, Canvas, localStorage
 
 ## 👤 Автор
 
-**ERNUR** — [GitHub](https://github.com/твой-username) · [Telegram](https://t.me/твой_ник)
+**ERNUR** — [GitHub](https://github.com/ernurrud) · [Telegram](https://t.me/ernur_rud)
 
 ---
 
