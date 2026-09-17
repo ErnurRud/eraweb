@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a0a1a">
+    <title>СИЛА</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👾</text></svg>">
+
+    <!-- Тема ДО стилей — чтобы не мигало -->
+    <script>
+        (function() {
+            try {
+                var theme = localStorage.getItem('siteTheme') || 'dark';
+                if (theme === 'light') {
+                    document.documentElement.classList.add('light');
+                }
+            } catch (e) {}
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="power.css">
+</head>
+<body>
+    <canvas id="stars"></canvas>
+
+    <a href="index.html" class="back-btn">◄ НАЗАД</a>
+
+    <!-- КНОПКА ТЕМЫ -->
+    <button id="musicToggle" class="music-btn" title="Включить музыку">🔇</button>
+    <button id="musicNext" class="music-next-btn" title="Следующий трек">⏭</button>
+    <button id="themeToggle" title="Сменить тему">🌙</button>
+
+    <main class="power-container">
+        <h1 class="power-title glitch" data-text="POWER REACTOR">POWER REACTOR</h1>
+        <p class="power-subtitle">&gt; тыкай реактор и качай энергию</p>
+
+        <!-- HUD -->
+        <div class="hud">
+            <div class="hud-item big">
+                <span class="hud-label">ЭНЕРГИЯ</span>
+                <span class="hud-value" id="energy">0</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">В СЕК</span>
+                <span class="hud-value" id="eps">0</span>
+            </div>
+        </div>
+
+        <!-- РЕАКТОР -->
+        <div class="reactor-wrapper">
+            <button class="reactor" id="reactor" aria-label="Тыкай реактор">
+                <div class="reactor-ring ring1"></div>
+                <div class="reactor-ring ring2"></div>
+                <div class="reactor-ring ring3"></div>
+                <div class="reactor-core" id="reactorCore">⚛️</div>
+            </button>
+            <div class="reactor-hint" id="reactorHint">+1 за клик</div>
+        </div>
+
+        <!-- ВКЛАДКИ -->
+        <div class="tabs">
+            <button class="tab active" data-tab="upgrades">🔧 УЛУЧШЕНИЯ</button>
+            <button class="tab" data-tab="prestige">🌟 ПРЕСТИЖ</button>
+            <button class="tab" data-tab="stats">📊 СТАТИСТИКА</button>
+        </div>
+
+        <!-- СОДЕРЖИМОЕ ВКЛАДОК -->
+        <div class="tab-content">
+            <div class="tab-panel active" id="panel-upgrades">
+                <div class="items-list" id="upgradesList"></div>
+            </div>
+
+            <div class="tab-panel" id="panel-prestige">
+                <div class="prestige-box">
+                    <h2>🌟 ПРЕСТИЖ</h2>
+                    <p class="prestige-desc">
+                        Сбрось весь прогресс, но получи <b>звёзды</b>.<br>
+                        Каждая звезда даёт <b>+10%</b> к добыче энергии навсегда.
+                    </p>
+                    <div class="prestige-info">
+                        <div class="prestige-stat">
+                            <span class="hud-label">ЗВЁЗДЫ</span>
+                            <span class="hud-value" id="starsCount">0</span>
+                        </div>
+                        <div class="prestige-stat">
+                            <span class="hud-label">БОНУС</span>
+                            <span class="hud-value" id="starsBonus">+0%</span>
+                        </div>
+                        <div class="prestige-stat">
+                            <span class="hud-label">ПОЛУЧИШЬ</span>
+                            <span class="hud-value" id="starsGain">0</span>
+                        </div>
+                    </div>
+                    <button class="prestige-btn" id="prestigeBtn" disabled>
+                        🌟 ПРЕСТИЖ
+                    </button>
+                </div>
+            </div>
+
+            <div class="tab-panel" id="panel-stats">
+                <div class="stats-box">
+                    <div class="stat-row">
+                        <span>Всего энергии добыто:</span>
+                        <b id="statTotal">0</b>
+                    </div>
+                    <div class="stat-row">
+                        <span>Всего кликов:</span>
+                        <b id="statClicks">0</b>
+                    </div>
+                    <div class="stat-row">
+                        <span>За клик:</span>
+                        <b id="statPerClick">1</b>
+                    </div>
+                    <div class="stat-row">
+                        <span>В секунду:</span>
+                        <b id="statPerSec">0</b>
+                    </div>
+                    <div class="stat-row">
+                        <span>Куплено улучшений:</span>
+                        <b id="statUpgrades">0</b>
+                    </div>
+                    <div class="stat-row">
+                        <span>Престижей сделано:</span>
+                        <b id="statPrestiges">0</b>
+                    </div>
+                    <div class="stat-row">
+                        <span>Играешь:</span>
+                        <b id="statTime">0с</b>
+                    </div>
+                </div>
+
+                <button class="reset-btn" id="resetBtn">
+                    ⚠️ СБРОСИТЬ ВСЁ
+                </button>
+            </div>
+        </div>
+
+        <p class="hint">
+            &gt; прогресс сохраняется автоматически &nbsp;|&nbsp; работает оффлайн-доход
+        </p>
+    </main>
+
+    <script src="music.js"></script>
+    <script src="theme.js"></script>
+    <script src="power.js"></script>
+    <script src="nozoom.js"></script>
+    <script src="achievements.js"></script>
+</body>
+</html>

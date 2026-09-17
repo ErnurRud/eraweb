@@ -1,0 +1,713 @@
+/* ================================
+   СБРОС
+================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    overscroll-behavior: none;
+}
+
+:root {
+    --bg: #0a0a1a;
+    --bg2: #12122a;
+    --text: #e0e0ff;
+    --neon-pink: #ff2e97;
+    --neon-cyan: #00f0ff;
+    --neon-purple: #b026ff;
+    --neon-green: #39ff14;
+    --neon-yellow: #ffcc00;
+    --grid: rgba(0, 240, 255, 0.06);
+}
+
+body {
+    font-family: 'VT323', monospace;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+#stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ================================
+   КНОПКА НАЗАД
+================================ */
+.back-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--neon-cyan);
+    background: rgba(10, 10, 26, 0.9);
+    border: 2px solid var(--neon-cyan);
+    padding: 10px 14px;
+    text-decoration: none;
+    z-index: 100;
+    transition: 0.3s;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+}
+
+.back-btn:hover,
+.back-btn:active {
+    background: var(--neon-cyan);
+    color: var(--bg);
+    box-shadow: 0 0 25px var(--neon-cyan);
+}
+
+/* ================================
+   КОНТЕЙНЕР
+================================ */
+.retro-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 70px 15px 40px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.retro-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(16px, 4vw, 26px);
+    color: #fff;
+    text-align: center;
+    text-shadow:
+        3px 3px 0 var(--neon-pink),
+        -3px -3px 0 var(--neon-cyan);
+    animation: glitch 3s infinite;
+}
+
+@keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-3px, 2px); }
+    94% { transform: translate(3px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+}
+
+.retro-subtitle {
+    font-size: 20px;
+    color: var(--neon-cyan);
+    text-align: center;
+    text-shadow: 0 0 10px var(--neon-cyan);
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ================================
+   МЕНЮ ИГР
+================================ */
+.game-menu {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.menu-card {
+    background: var(--bg2);
+    border: 3px solid var(--neon-purple);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: inherit;
+    color: var(--text);
+    box-shadow: 0 0 15px rgba(176, 38, 255, 0.3);
+}
+
+.menu-card:hover,
+.menu-card:active {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 25px var(--neon-pink), inset 0 0 25px rgba(255, 46, 151, 0.15);
+    transform: translateY(-4px);
+}
+
+.menu-emoji {
+    font-size: 48px;
+    transition: transform 0.3s;
+}
+
+.menu-card:hover .menu-emoji {
+    transform: scale(1.2) rotate(10deg);
+}
+
+.menu-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.menu-desc {
+    font-size: 18px;
+    color: var(--neon-purple);
+}
+
+/* ================================
+   ИГРОВАЯ ЗОНА
+================================ */
+.game-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.game-area.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: transparent;
+    border: 2px solid var(--neon-pink);
+    color: var(--neon-pink);
+    font-size: 18px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: 0.3s;
+}
+
+.close-btn:hover,
+.close-btn:active {
+    background: var(--neon-pink);
+    color: var(--bg);
+    box-shadow: 0 0 20px var(--neon-pink);
+}
+
+.game-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    color: var(--neon-pink);
+    text-shadow: 0 0 15px var(--neon-pink);
+    margin-bottom: 10px;
+}
+
+.game-panel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.game-panel.hidden {
+    display: none;
+}
+
+/* ================================
+   HUD
+================================ */
+.hud-mini {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.hud-item {
+    background: var(--bg2);
+    border: 2px solid var(--neon-purple);
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    max-width: 130px;
+    box-shadow: 0 0 12px rgba(176, 38, 255, 0.4);
+}
+
+.hud-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--neon-purple);
+    margin-bottom: 4px;
+    text-shadow: 0 0 8px var(--neon-purple);
+}
+
+.hud-value {
+    font-size: 22px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px var(--neon-cyan);
+}
+
+/* ================================
+   CANVAS WRAPPER
+================================ */
+.canvas-wrapper {
+    position: relative;
+    border: 4px solid var(--neon-cyan);
+    box-shadow:
+        0 0 20px var(--neon-cyan),
+        0 0 60px rgba(0, 240, 255, 0.3),
+        inset 0 0 20px rgba(0, 240, 255, 0.2);
+    background: var(--bg2);
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 4 / 5;
+    touch-action: none;
+}
+
+#breakoutCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+/* ================================
+   ОВЕРЛЕЙ
+================================ */
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 10, 26, 0.92);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    transition: opacity 0.3s;
+    padding: 15px;
+}
+
+.overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.overlay-content {
+    text-align: center;
+}
+
+.overlay-content h2 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    color: var(--neon-pink);
+    text-shadow: 0 0 15px var(--neon-pink);
+    margin-bottom: 15px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.overlay-content p {
+    font-size: 18px;
+    color: var(--neon-cyan);
+    margin-bottom: 20px;
+}
+
+/* ================================
+   КНОПКА
+================================ */
+.btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    padding: 14px 22px;
+    background: transparent;
+    color: var(--neon-cyan);
+    border: 3px solid var(--neon-cyan);
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+}
+
+.btn:hover,
+.btn:active {
+    background: var(--neon-cyan);
+    color: var(--bg);
+    box-shadow: 0 0 25px var(--neon-cyan), 0 0 50px var(--neon-cyan);
+}
+
+/* ================================
+   MEMORY GRID
+================================ */
+.memory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.memory-card {
+    aspect-ratio: 1;
+    background: var(--bg2);
+    border: 3px solid var(--neon-purple);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    cursor: pointer;
+    transition: 0.3s;
+    perspective: 800px;
+    position: relative;
+    box-shadow: 0 0 12px rgba(176, 38, 255, 0.3);
+    font-family: 'Press Start 2P', monospace;
+    color: transparent;
+}
+
+.memory-card::before {
+    content: '?';
+    position: absolute;
+    color: var(--neon-purple);
+    font-size: 28px;
+    text-shadow: 0 0 10px var(--neon-purple);
+    transition: 0.3s;
+}
+
+.memory-card.flipped,
+.memory-card.matched {
+    background: var(--neon-cyan);
+    color: var(--bg);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 25px var(--neon-cyan);
+}
+
+.memory-card.flipped::before,
+.memory-card.matched::before {
+    opacity: 0;
+}
+
+.memory-card.matched {
+    background: var(--neon-green);
+    border-color: var(--neon-green);
+    box-shadow: 0 0 25px var(--neon-green);
+    animation: matchPulse 0.5s ease-out;
+}
+
+@keyframes matchPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+/* ================================
+   REACTION ZONE
+================================ */
+.reaction-zone {
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 1;
+    background: var(--bg2);
+    border: 4px solid var(--neon-pink);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.1s;
+    box-shadow: 0 0 25px rgba(255, 46, 151, 0.4);
+    padding: 20px;
+    text-align: center;
+}
+
+.reaction-zone.waiting {
+    background: #1a1a2e;
+    border-color: var(--neon-pink);
+}
+
+.reaction-zone.ready {
+    background: var(--neon-green);
+    border-color: var(--neon-green);
+    box-shadow: 0 0 40px var(--neon-green), 0 0 80px var(--neon-green);
+    animation: readyFlash 0.15s;
+}
+
+.reaction-zone.toosoon {
+    background: #ff0040;
+    border-color: #ff0040;
+    box-shadow: 0 0 40px #ff0040;
+}
+
+.reaction-zone.result {
+    background: var(--neon-cyan);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 40px var(--neon-cyan);
+}
+
+@keyframes readyFlash {
+    0% { transform: scale(0.98); }
+    100% { transform: scale(1); }
+}
+
+.reaction-text {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    line-height: 1.6;
+    pointer-events: none;
+}
+
+/* ================================
+   ПОДСКАЗКА
+================================ */
+.hint {
+    font-size: 16px;
+    color: var(--neon-purple);
+    text-align: center;
+    text-shadow: 0 0 8px var(--neon-purple);
+    line-height: 1.4;
+    padding: 0 10px;
+}
+
+/* ================================
+   АДАПТИВ
+================================ */
+@media (max-width: 768px) {
+    .retro-container {
+        padding: 65px 12px 30px;
+    }
+
+    .hud-value {
+        font-size: 20px;
+    }
+
+    .memory-card {
+        font-size: 28px;
+    }
+
+    .memory-card::before {
+        font-size: 22px;
+    }
+
+    .reaction-text {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 380px) {
+    .hud-label {
+        font-size: 6px;
+    }
+
+    .hud-value {
+        font-size: 18px;
+    }
+
+    .menu-emoji {
+        font-size: 40px;
+    }
+
+    .menu-name {
+        font-size: 10px;
+    }
+}
+
+/* ================================
+   КНОПКА ТЕМЫ (глобальная)
+================================ */
+#themeToggle {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 18px;
+    width: 44px;
+    height: 44px;
+    background: rgba(10, 10, 26, 0.9);
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: inherit;
+    padding: 0;
+    line-height: 1;
+}
+
+#themeToggle:hover,
+#themeToggle:active {
+    background: var(--neon-cyan);
+    color: var(--bg);
+    box-shadow: 0 0 25px var(--neon-cyan), 0 0 50px var(--neon-cyan);
+    transform: scale(1.08);
+}
+
+/* Светлая тема — переопределяем переменные */
+body.light,
+html.light body {
+    --bg: #1a1a2e;
+    --bg2: #2a2a4e;
+    --text: #fff8e7;
+    --neon-pink: #ff6600;
+    --neon-cyan: #ffcc00;
+    --neon-purple: #ff00aa;
+    --neon-green: #66ff00;
+    --neon-yellow: #ff9900;
+    --neon-orange: #ff5500;
+    --grid: rgba(255, 204, 0, 0.08);
+}
+
+/* Светлая тема — меняем цвет кнопки темы */
+body.light #themeToggle,
+html.light #themeToggle {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+    background: rgba(26, 26, 46, 0.9);
+}
+
+body.light #themeToggle:hover,
+html.light #themeToggle:hover {
+    background: var(--neon-cyan);
+    color: var(--bg);
+}
+
+/* Кнопка музыки (глобальная) */
+.music-btn {
+    position: fixed;
+    top: 15px;
+    right: 65px;   /* отступ чтобы не наложилась на что-то */
+    font-size: 18px;
+    width: 44px;
+    height: 44px;
+    background: rgba(10, 10, 26, 0.9);
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: inherit;
+    padding: 0;
+    line-height: 1;
+}
+
+.music-btn:hover,
+.music-btn:active {
+    background: var(--neon-cyan);
+    color: var(--bg);
+    box-shadow: 0 0 25px var(--neon-cyan), 0 0 50px var(--neon-cyan);
+    transform: scale(1.08);
+}
+
+.music-btn.playing {
+    border-color: var(--neon-green);
+    color: var(--neon-green);
+    animation: musicPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes musicPulse {
+    0%, 100% { box-shadow: 0 0 8px var(--neon-green); }
+    50% { box-shadow: 0 0 20px var(--neon-green), 0 0 35px var(--neon-green); }
+}
+
+/* Кнопка следующего трека */
+.music-next-btn {
+    position: fixed;
+    top: 15px;
+    right: 115px;   /* сдвинь влево от music-btn */
+    font-size: 16px;
+    width: 44px;
+    height: 44px;
+    background: rgba(10, 10, 26, 0.9);
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: inherit;
+    padding: 0;
+    line-height: 1;
+}
+
+.music-next-btn:hover,
+.music-next-btn:active {
+    background: var(--neon-cyan);
+    color: var(--bg);
+    box-shadow: 0 0 25px var(--neon-cyan), 0 0 50px var(--neon-cyan);
+    transform: scale(1.08);
+}
+
+/* Toast */
+.music-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(10, 10, 26, 0.95);
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    padding: 10px 20px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    box-shadow: 0 0 20px var(--neon-cyan);
+    border-radius: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 9999;
+    text-shadow: 0 0 8px var(--neon-cyan);
+    white-space: nowrap;
+}
+
+.music-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
