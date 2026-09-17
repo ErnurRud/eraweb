@@ -1,0 +1,835 @@
+/* ================================
+   СБРОС
+================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    overscroll-behavior: none;
+}
+
+:root {
+    --bg: #0a0a1a;
+    --bg2: #12122a;
+    --text: #e0e0ff;
+    --neon-pink: #ff2e97;
+    --neon-cyan: #00f0ff;
+    --neon-purple: #b026ff;
+    --neon-green: #39ff14;
+    --neon-yellow: #ffcc00;
+    --neon-orange: #ff8800;
+    --grid: rgba(0, 240, 255, 0.06);
+}
+
+body {
+    font-family: 'VT323', monospace;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+#stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ================================
+   КНОПКА НАЗАД
+================================ */
+.back-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--neon-cyan);
+    background: rgba(10, 10, 26, 0.9);
+    border: 2px solid var(--neon-cyan);
+    padding: 10px 14px;
+    text-decoration: none;
+    z-index: 100;
+    transition: 0.3s;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+}
+
+.back-btn:hover,
+.back-btn:active {
+    background: var(--neon-cyan);
+    color: var(--bg);
+    box-shadow: 0 0 25px var(--neon-cyan);
+}
+
+/* ================================
+   КОНТЕЙНЕР
+================================ */
+.power-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 65px 12px 30px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.power-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(14px, 3.5vw, 22px);
+    color: #fff;
+    text-align: center;
+    text-shadow:
+        3px 3px 0 var(--neon-yellow),
+        -3px -3px 0 var(--neon-orange);
+    animation: glitch 3s infinite;
+}
+
+@keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-3px, 2px); }
+    94% { transform: translate(3px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+}
+
+.power-subtitle {
+    font-size: 17px;
+    color: var(--neon-yellow);
+    text-align: center;
+    text-shadow: 0 0 10px var(--neon-yellow);
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ================================
+   HUD
+================================ */
+.hud {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
+}
+
+.hud-item {
+    background: var(--bg2);
+    border: 2px solid var(--neon-purple);
+    padding: 8px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    max-width: 200px;
+    box-shadow: 0 0 12px rgba(176, 38, 255, 0.4);
+}
+
+.hud-item.big {
+    flex: 1.4;
+}
+
+.hud-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--neon-purple);
+    margin-bottom: 4px;
+    text-shadow: 0 0 8px var(--neon-purple);
+}
+
+.hud-value {
+    font-size: 24px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.hud-item.big .hud-value {
+    color: var(--neon-yellow);
+    text-shadow: 0 0 15px var(--neon-yellow);
+    font-size: 28px;
+}
+
+/* ================================
+   РЕАКТОР
+================================ */
+.reactor-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+}
+
+.reactor {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #1a1a3a, #0a0a1a);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.1s;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.reactor:active {
+    transform: scale(0.96);
+}
+
+.reactor-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.ring1 {
+    inset: 0;
+    border-color: var(--neon-cyan);
+    box-shadow:
+        0 0 20px var(--neon-cyan),
+        inset 0 0 20px var(--neon-cyan);
+    animation: spin 8s linear infinite;
+    border-top-color: transparent;
+    border-right-color: transparent;
+}
+
+.ring2 {
+    inset: 12px;
+    border-color: var(--neon-yellow);
+    box-shadow:
+        0 0 20px var(--neon-yellow),
+        inset 0 0 20px var(--neon-yellow);
+    animation: spin 5s linear infinite reverse;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+}
+
+.ring3 {
+    inset: 24px;
+    border-color: var(--neon-pink);
+    box-shadow:
+        0 0 20px var(--neon-pink),
+        inset 0 0 20px var(--neon-pink);
+    animation: spin 3s linear infinite;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.reactor-core {
+    font-size: 90px;
+    filter: drop-shadow(0 0 25px var(--neon-yellow));
+    animation: pulseCore 1.5s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes pulseCore {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+
+.reactor-hint {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px var(--neon-cyan);
+    background: rgba(0, 240, 255, 0.1);
+    border: 2px solid var(--neon-cyan);
+    padding: 6px 10px;
+}
+
+/* Всплывающие "+N" при клике */
+.click-popup {
+    position: fixed;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    color: var(--neon-yellow);
+    text-shadow: 0 0 12px var(--neon-yellow);
+    pointer-events: none;
+    z-index: 999;
+    animation: popupFloat 1s ease-out forwards;
+}
+
+@keyframes popupFloat {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -70px) scale(1.4);
+    }
+}
+
+/* ================================
+   ВКЛАДКИ
+================================ */
+.tabs {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.tab {
+    flex: 1;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 12px 6px;
+    background: var(--bg2);
+    color: var(--neon-cyan);
+    border: 2px solid var(--neon-cyan);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.tab:hover {
+    background: rgba(0, 240, 255, 0.1);
+}
+
+.tab.active {
+    background: var(--neon-cyan);
+    color: var(--bg);
+    box-shadow: 0 0 20px var(--neon-cyan);
+}
+
+.tab-content {
+    width: 100%;
+}
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================
+   СПИСОК УЛУЧШЕНИЙ
+================================ */
+.items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.upgrade-item {
+    background: var(--bg2);
+    border: 2px solid var(--neon-purple);
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.upgrade-item:hover:not(.locked) {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.upgrade-item.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.upgrade-item.affordable {
+    border-color: var(--neon-green);
+    animation: affordablePulse 1.2s infinite;
+}
+
+@keyframes affordablePulse {
+    0%, 100% { box-shadow: 0 0 8px rgba(57, 255, 20, 0.3); }
+    50% { box-shadow: 0 0 22px rgba(57, 255, 20, 0.7); }
+}
+
+.upgrade-icon {
+    font-size: 30px;
+    min-width: 42px;
+    text-align: center;
+    filter: drop-shadow(0 0 8px currentColor);
+}
+
+.upgrade-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.upgrade-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 8px var(--neon-cyan);
+    margin-bottom: 5px;
+    line-height: 1.4;
+}
+
+.upgrade-desc {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+
+.upgrade-level {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--neon-purple);
+    text-shadow: 0 0 6px var(--neon-purple);
+}
+
+.upgrade-price {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--neon-yellow);
+    text-shadow: 0 0 8px var(--neon-yellow);
+    text-align: right;
+    min-width: 90px;
+    line-height: 1.5;
+}
+
+.upgrade-item.locked .upgrade-price {
+    color: var(--neon-red);
+    text-shadow: 0 0 8px var(--neon-red);
+}
+
+.upgrade-item.affordable .upgrade-price {
+    color: var(--neon-green);
+    text-shadow: 0 0 8px var(--neon-green);
+}
+
+/* ================================
+   ПРЕСТИЖ
+================================ */
+.prestige-box {
+    background: var(--bg2);
+    border: 3px solid var(--neon-yellow);
+    padding: 20px;
+    text-align: center;
+    margin-top: 8px;
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
+}
+
+.prestige-box h2 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    color: var(--neon-yellow);
+    text-shadow: 0 0 15px var(--neon-yellow);
+    margin-bottom: 15px;
+}
+
+.prestige-desc {
+    font-size: 17px;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.prestige-desc b {
+    color: var(--neon-cyan);
+}
+
+.prestige-info {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.prestige-stat {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--neon-purple);
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 100px;
+}
+
+.prestige-stat .hud-value {
+    font-size: 20px;
+    color: var(--neon-yellow);
+    text-shadow: 0 0 10px var(--neon-yellow);
+}
+
+.prestige-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    padding: 16px 24px;
+    background: transparent;
+    color: var(--neon-yellow);
+    border: 3px solid var(--neon-yellow);
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+    width: 100%;
+}
+
+.prestige-btn:not(:disabled):hover {
+    background: var(--neon-yellow);
+    color: var(--bg);
+    box-shadow: 0 0 30px var(--neon-yellow), 0 0 60px var(--neon-yellow);
+    transform: translateY(-2px);
+}
+
+.prestige-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    border-color: #666;
+    color: #666;
+    box-shadow: none;
+}
+
+/* ================================
+   СТАТИСТИКА
+================================ */
+.stats-box {
+    background: var(--bg2);
+    border: 3px solid var(--neon-cyan);
+    padding: 15px;
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 3px solid var(--neon-cyan);
+    font-size: 16px;
+}
+
+.stat-row span {
+    color: var(--text);
+}
+
+.stat-row b {
+    color: var(--neon-yellow);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    text-shadow: 0 0 10px var(--neon-yellow);
+}
+
+.reset-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    padding: 12px 18px;
+    background: transparent;
+    color: var(--neon-red, #ff0040);
+    border: 3px solid #ff0040;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 0 15px rgba(255, 0, 64, 0.3);
+    width: 100%;
+    margin-top: 15px;
+}
+
+.reset-btn:hover {
+    background: #ff0040;
+    color: var(--bg);
+    box-shadow: 0 0 25px #ff0040;
+}
+
+/* ================================
+   ПОДСКАЗКА
+================================ */
+.hint {
+    font-size: 14px;
+    color: var(--neon-purple);
+    text-align: center;
+    text-shadow: 0 0 8px var(--neon-purple);
+    line-height: 1.4;
+    padding: 0 8px;
+    margin-top: 10px;
+}
+
+/* ================================
+   АДАПТИВ
+================================ */
+@media (max-width: 500px) {
+    .power-container {
+        padding: 55px 10px 20px;
+        gap: 8px;
+    }
+
+    .reactor {
+        width: 180px;
+        height: 180px;
+    }
+
+    .reactor-core {
+        font-size: 70px;
+    }
+
+    .hud-value {
+        font-size: 20px;
+    }
+
+    .hud-item.big .hud-value {
+        font-size: 22px;
+    }
+
+    .upgrade-icon {
+        font-size: 24px;
+        min-width: 32px;
+    }
+
+    .upgrade-name {
+        font-size: 8px;
+    }
+
+    .upgrade-desc {
+        font-size: 13px;
+    }
+
+    .upgrade-price {
+        min-width: 76px;
+        font-size: 8px;
+    }
+
+    .tab {
+        font-size: 7px;
+        padding: 10px 4px;
+    }
+
+    .stat-row {
+        font-size: 14px;
+    }
+
+    .stat-row b {
+        font-size: 9px;
+    }
+
+    .hint {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 360px) {
+    .reactor {
+        width: 150px;
+        height: 150px;
+    }
+
+    .reactor-core {
+        font-size: 60px;
+    }
+
+    .power-title {
+        font-size: 12px;
+    }
+}
+
+/* ================================
+   КНОПКА ТЕМЫ (глобальная)
+================================ */
+#themeToggle {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 18px;
+    width: 44px;
+    height: 44px;
+    background: rgba(10, 10, 26, 0.9);
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: inherit;
+    padding: 0;
+    line-height: 1;
+}
+
+#themeToggle:hover,
+#themeToggle:active {
+    background: var(--neon-cyan);
+    color: var(--bg);
+    box-shadow: 0 0 25px var(--neon-cyan), 0 0 50px var(--neon-cyan);
+    transform: scale(1.08);
+}
+
+/* Светлая тема — переопределяем переменные */
+body.light,
+html.light body {
+    --bg: #1a1a2e;
+    --bg2: #2a2a4e;
+    --text: #fff8e7;
+    --neon-pink: #ff6600;
+    --neon-cyan: #ffcc00;
+    --neon-purple: #ff00aa;
+    --neon-green: #66ff00;
+    --neon-yellow: #ff9900;
+    --neon-orange: #ff5500;
+    --grid: rgba(255, 204, 0, 0.08);
+}
+
+/* Светлая тема — меняем цвет кнопки темы */
+body.light #themeToggle,
+html.light #themeToggle {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+    background: rgba(26, 26, 46, 0.9);
+}
+
+body.light #themeToggle:hover,
+html.light #themeToggle:hover {
+    background: var(--neon-cyan);
+    color: var(--bg);
+}
+
+/* Кнопка музыки (глобальная) */
+.music-btn {
+    position: fixed;
+    top: 15px;
+    right: 65px;   /* отступ чтобы не наложилась на что-то */
+    font-size: 18px;
+    width: 44px;
+    height: 44px;
+    background: rgba(10, 10, 26, 0.9);
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: inherit;
+    padding: 0;
+    line-height: 1;
+}
+
+.music-btn:hover,
+.music-btn:active {
+    background: var(--neon-cyan);
+    color: var(--bg);
+    box-shadow: 0 0 25px var(--neon-cyan), 0 0 50px var(--neon-cyan);
+    transform: scale(1.08);
+}
+
+.music-btn.playing {
+    border-color: var(--neon-green);
+    color: var(--neon-green);
+    animation: musicPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes musicPulse {
+    0%, 100% { box-shadow: 0 0 8px var(--neon-green); }
+    50% { box-shadow: 0 0 20px var(--neon-green), 0 0 35px var(--neon-green); }
+}
+
+/* Кнопка следующего трека */
+.music-next-btn {
+    position: fixed;
+    top: 15px;
+    right: 115px;   /* сдвинь влево от music-btn */
+    font-size: 16px;
+    width: 44px;
+    height: 44px;
+    background: rgba(10, 10, 26, 0.9);
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: inherit;
+    padding: 0;
+    line-height: 1;
+}
+
+.music-next-btn:hover,
+.music-next-btn:active {
+    background: var(--neon-cyan);
+    color: var(--bg);
+    box-shadow: 0 0 25px var(--neon-cyan), 0 0 50px var(--neon-cyan);
+    transform: scale(1.08);
+}
+
+/* Toast */
+.music-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(10, 10, 26, 0.95);
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    padding: 10px 20px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    box-shadow: 0 0 20px var(--neon-cyan);
+    border-radius: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 9999;
+    text-shadow: 0 0 8px var(--neon-cyan);
+    white-space: nowrap;
+}
+
+.music-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}

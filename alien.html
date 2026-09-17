@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a1a">
+    <title>Пришельцы</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👾</text></svg>">
+
+    <script>
+    (function() {
+        try {
+            var theme = localStorage.getItem('siteTheme') || 'dark';
+            if (theme === 'light') {
+                document.documentElement.classList.add('light');
+            }
+        } catch (e) {}
+    })();
+</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="alien.css">
+</head>
+<body>
+    <canvas id="stars"></canvas>
+
+    <a href="index.html" class="back-btn">◄ НАЗАД</a>
+
+    <button id="musicToggle" class="music-btn" title="Включить музыку">🔇</button>
+    <button id="musicNext" class="music-next-btn" title="Следующий трек">⏭</button>
+    <button id="themeToggle" title="Сменить тему">🌙</button>
+
+    <main class="alien-container">
+        <h1 class="alien-title glitch" data-text="ALIEN INVASION">ALIEN INVASION</h1>
+        <p class="alien-subtitle">&gt; защити землю от пришельцев</p>
+
+        <!-- HUD -->
+        <div class="hud">
+            <div class="hud-item">
+                <span class="hud-label">СЧЁТ</span>
+                <span class="hud-value" id="score">0</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">РЕКОРД</span>
+                <span class="hud-value" id="highScore">0</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">ВОЛНА</span>
+                <span class="hud-value" id="wave">1</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">❤️</span>
+                <span class="hud-value" id="lives">3</span>
+            </div>
+        </div>
+
+        <!-- Панель активных бонусов -->
+        <div class="powerups-bar" id="powerupsBar">
+            <div class="powerup-tag hidden" id="tagRapid">
+                ⚡ <span id="rapidTime">0</span>с
+            </div>
+            <div class="powerup-tag hidden" id="tagShield">
+                🛡️ <span id="shieldTime">0</span>с
+            </div>
+            <div class="powerup-tag hidden" id="tagTriple">
+                🔫×3 <span id="tripleTime">0</span>с
+            </div>
+        </div>
+
+        <!-- Игровое поле -->
+        <div class="canvas-wrapper" id="canvasWrapper">
+            <canvas id="game" width="400" height="500"></canvas>
+
+            <div class="overlay" id="overlay">
+                <div class="overlay-content">
+                    <h2 id="overlayTitle">ГОТОВ?</h2>
+                    <p id="overlayText">Води пальцем — корабль следует<br>Он стреляет сам!</p>
+                    <button id="startBtn" class="btn">▶ ИГРАТЬ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Кнопки управления (для мобильных) -->
+        <div class="controls">
+            <button class="ctrl-btn" id="leftBtn">◄</button>
+            <button class="ctrl-btn fire" id="fireBtn">🔥</button>
+            <button class="ctrl-btn" id="rightBtn">►</button>
+        </div>
+
+        <p class="hint">
+            &gt; двигай: палец / мышь / стрелки &nbsp;|&nbsp; ПРОБЕЛ / 🔥 = выстрел &nbsp;|&nbsp; R = заново
+        </p>
+    </main>
+
+    <script src="music.js"></script>
+    <script src="alien.js"></script>
+    <script src="theme.js"></script>
+    <script src="nozoom.js"></script>
+    <script src="achievements.js"></script>
+</body>
+</html>

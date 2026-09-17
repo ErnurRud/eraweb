@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a1a">
+    <title>Ретро Аркада</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👾</text></svg>">
+
+    <script>
+    (function() {
+        try {
+            var theme = localStorage.getItem('siteTheme') || 'dark';
+            if (theme === 'light') {
+                document.documentElement.classList.add('light');
+            }
+        } catch (e) {}
+    })();
+</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="retro.css">
+</head>
+<body>
+    <canvas id="stars"></canvas>
+
+    <a href="index.html" class="back-btn">◄ НАЗАД</a>
+
+    <button id="musicToggle" class="music-btn" title="Включить музыку">🔇</button>
+    <button id="musicNext" class="music-next-btn" title="Следующий трек">⏭</button>
+    <button id="themeToggle" title="Сменить тему">🌙</button>
+    <main class="retro-container">
+        <h1 class="retro-title glitch" data-text="RETRO ARCADE">RETRO ARCADE</h1>
+        <p class="retro-subtitle">&gt; выбери игру и играй</p>
+
+        <!-- МЕНЮ ИГР -->
+        <div class="game-menu" id="gameMenu">
+            <button class="menu-card" data-game="breakout">
+                <span class="menu-emoji">🧱</span>
+                <span class="menu-name">BREAKOUT</span>
+                <span class="menu-desc">разбей все блоки</span>
+            </button>
+            <button class="menu-card" data-game="memory">
+                <span class="menu-emoji">🧠</span>
+                <span class="menu-name">MEMORY</span>
+                <span class="menu-desc">найди пары</span>
+            </button>
+            <button class="menu-card" data-game="reaction">
+                <span class="menu-emoji">⚡</span>
+                <span class="menu-name">REACTION</span>
+                <span class="menu-desc">тест реакции</span>
+            </button>
+        </div>
+
+        <!-- ИГРОВАЯ ЗОНА -->
+        <div class="game-area hidden" id="gameArea">
+            <button class="close-btn" id="closeGame">✕</button>
+
+            <h2 class="game-title" id="gameTitle">BREAKOUT</h2>
+
+            <!-- BREAKOUT -->
+            <div class="game-panel" id="panel-breakout">
+                <div class="hud-mini">
+                    <div class="hud-item">
+                        <span class="hud-label">СЧЁТ</span>
+                        <span class="hud-value" id="bScore">0</span>
+                    </div>
+                    <div class="hud-item">
+                        <span class="hud-label">ЖИЗНИ</span>
+                        <span class="hud-value" id="bLives">3</span>
+                    </div>
+                    <div class="hud-item">
+                        <span class="hud-label">УРОВЕНЬ</span>
+                        <span class="hud-value" id="bLevel">1</span>
+                    </div>
+                </div>
+                <div class="canvas-wrapper" id="bWrapper">
+                    <canvas id="breakoutCanvas" width="400" height="500"></canvas>
+                    <div class="overlay" id="bOverlay">
+                        <div class="overlay-content">
+                            <h2 id="bOverlayTitle">ГОТОВ?</h2>
+                            <p id="bOverlayText">Води пальцем / мышью</p>
+                            <button id="bStartBtn" class="btn">▶ ИГРАТЬ</button>
+                        </div>
+                    </div>
+                </div>
+                <p class="hint">&gt; двигай платформу пальцем или мышью</p>
+            </div>
+
+            <!-- MEMORY -->
+            <div class="game-panel hidden" id="panel-memory">
+                <div class="hud-mini">
+                    <div class="hud-item">
+                        <span class="hud-label">ХОДЫ</span>
+                        <span class="hud-value" id="mMoves">0</span>
+                    </div>
+                    <div class="hud-item">
+                        <span class="hud-label">ПАРЫ</span>
+                        <span class="hud-value" id="mPairs">0/8</span>
+                    </div>
+                    <div class="hud-item">
+                        <span class="hud-label">ВРЕМЯ</span>
+                        <span class="hud-value" id="mTime">0s</span>
+                    </div>
+                </div>
+                <div class="memory-grid" id="memoryGrid"></div>
+                <button class="btn" id="mRestart" style="margin-top: 15px;">↻ ЗАНОВО</button>
+            </div>
+
+            <!-- REACTION -->
+            <div class="game-panel hidden" id="panel-reaction">
+                <div class="hud-mini">
+                    <div class="hud-item">
+                        <span class="hud-label">ЛУЧШЕЕ</span>
+                        <span class="hud-value" id="rBest">—</span>
+                    </div>
+                    <div class="hud-item">
+                        <span class="hud-label">ПОПЫТКА</span>
+                        <span class="hud-value" id="rTry">1</span>
+                    </div>
+                </div>
+                <div class="reaction-zone" id="reactionZone">
+                    <div class="reaction-text" id="reactionText">
+                        НАЖМИ, ЧТОБЫ НАЧАТЬ
+                    </div>
+                </div>
+                <p class="hint">&gt; жми как только экран станет зелёным</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="music.js"></script>
+    <script src="retro.js"></script>
+    <script src="theme.js"></script>
+    <script src="nozoom.js"></script>
+    <script src="achievements.js"></script>
+</body>
+</html>

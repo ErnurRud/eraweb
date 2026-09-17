@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a1a">
+    <title>Код</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👾</text></svg>">
+
+    <script>
+    (function() {
+        try {
+            var theme = localStorage.getItem('siteTheme') || 'dark';
+            if (theme === 'light') {
+                document.documentElement.classList.add('light');
+            }
+        } catch (e) {}
+    })();
+</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="code.css">
+</head>
+<body>
+    <canvas id="stars"></canvas>
+
+    <a href="index.html" class="back-btn">◄ НАЗАД</a>
+
+    <button id="musicToggle" class="music-btn" title="Включить музыку">🔇</button>
+    <button id="musicNext" class="music-next-btn" title="Следующий трек">⏭</button>
+    <button id="themeToggle" title="Сменить тему">🌙</button>
+
+    <main class="code-container">
+        <h1 class="code-title glitch" data-text="DEV TERMINAL">DEV TERMINAL</h1>
+        <p class="code-subtitle">&gt; введи "help" для списка команд</p>
+
+        <!-- Быстрые команды -->
+        <div class="quick-cmds">
+            <button class="quick-btn" data-cmd="help">help</button>
+            <button class="quick-btn" data-cmd="about">about</button>
+            <button class="quick-btn" data-cmd="skills">skills</button>
+            <button class="quick-btn" data-cmd="projects">projects</button>
+            <button class="quick-btn" data-cmd="contact">contact</button>
+            <button class="quick-btn" data-cmd="clear">clear</button>
+        </div>
+
+        <!-- Окно терминала -->
+        <div class="terminal" id="terminal">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                </div>
+                <div class="terminal-title">user@dev:~$ bash</div>
+                <div class="terminal-status" id="terminalStatus">● ONLINE</div>
+            </div>
+
+            <div class="terminal-body" id="terminalBody">
+                <!-- Сюда JS добавляет строки -->
+            </div>
+
+            <div class="terminal-input-line">
+                <span class="prompt">visitor@mysite:~$</span>
+                <input
+                    type="text"
+                    id="terminalInput"
+                    class="terminal-input"
+                    autocomplete="off"
+                    spellcheck="false"
+                    autofocus
+                >
+                <span class="cursor" id="cursor">█</span>
+            </div>
+        </div>
+
+        <p class="hint">
+            &gt; на телефоне используй кнопки сверху &nbsp;|&nbsp; ↑ ↓ = история команд &nbsp;|&nbsp; Tab = автодополнение
+        </p>
+    </main>
+    
+    <script src="music.js"></script>
+    <script src="code.js"></script>
+    <script src="theme.js"></script>
+    <script src="nozoom.js"></script>
+    <script src="achievements.js"></script>
+</body>
+</html>
